@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accident Detection System - External Access Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            text-align: center;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .status.healthy {
+            background: rgba(40, 167, 69, 0.3);
+            border: 1px solid #28a745;
+        }
+        .status.error {
+            background: rgba(220, 53, 69, 0.3);
+            border: 1px solid #dc3545;
+        }
+        .endpoint {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #4a9fe3;
+        }
+        .code {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        button {
+            background: #4a9fe3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #357abd;
+        }
+        .file-upload {
+            margin: 15px 0;
+        }
+        input[type="file"] {
+            margin: 10px 0;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        .results {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚗 Accident Detection System</h1>
+        <h2>External Access Demo</h2>
+        
+        <div class="section">
+            <h3>📡 Service Status</h3>
+            <div id="status" class="status">Checking...</div>
+            <button onclick="checkHealth()">🔄 Refresh Status</button>
+        </div>
+        
+        <div class="section">
+            <h3>📋 System Information</h3>
+            <div id="systemInfo">Loading...</div>
+            <button onclick="getSystemInfo()">📊 Get System Info</button>
+        </div>
+        
+        <div class="section">
+            <h3>🔍 File Analysis</h3>
+            <div class="file-upload">
+                <input type="file" id="fileInput" accept="image/*,video/*">
+                <button onclick="analyzeFile()">🚀 Analyze File</button>
+            </div>
+            <div id="analysisResults" class="results" style="display: none;"></div>
+        </div>
+        
+        <div class="section">
+            <h3>🌐 Access Information</h3>
+            <div class="endpoint">
+                <strong>Web Interface:</strong><br>
+                <span id="webUrl">http://192.168.1.6:5000</span>
+            </div>
+            <div class="endpoint">
+                <strong>API Base URL:</strong><br>
+                <span id="apiUrl">http://192.168.1.6:5000/api</span>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h3>📚 API Examples</h3>
+            
+            <h4>Health Check (GET)</h4>
+            <div class="code">
+curl http://192.168.1.6:5000/api/health</div>
+            
+            <h4>System Info (GET)</h4>
+            <div class="code">
+curl http://192.168.1.6:5000/api/info</div>
+            
+            <h4>Analyze File (POST)</h4>
+            <div class="code">
+curl -X POST -F "file=@accident_image.jpg" http://192.168.1.6:5000/api/analyze</div>
+            
+            <h4>Python Example</h4>
+            <div class="code">
+import requests
+
+# Health check
+response = requests.get('http://192.168.1.6:5000/api/health')
+print(response.json())
+
+# Analyze file
+with open('accident_image.jpg', 'rb') as f:
+    files = {'file': f}
+    response = requests.post('http://192.168.1.6:5000/api/analyze', files=files)
+    result = response.json()
+    print(f"Accident detected: {result['accident_detected']}")
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SERVER_URL = 'http://192.168.1.6:5000';
+        
+        async function checkHealth() {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = 'Checking...';
+            statusDiv.className = 'status';
+            
+            try {
+                const response = await fetch(`${SERVER_URL}/api/health`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    statusDiv.innerHTML = `
+                        ✅ Service: ${data.service}<br>
+                        📊 Status: ${data.status}<br>
+                        🤖 Model Loaded: ${data.model_loaded ? 'Yes' : 'No'}<br>
+                        ⏰ Timestamp: ${new Date(data.timestamp * 1000).toLocaleString()}
+                    `;
+                    statusDiv.className = 'status healthy';
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `❌ Service Unavailable<br>Error: ${error.message}`;
+                statusDiv.className = 'status error';
+            }
+        }
+        
+        async function getSystemInfo() {
+            const infoDiv = document.getElementById('systemInfo');
+            infoDiv.textContent = 'Loading...';
+            
+            try {
+                const response = await fetch(`${SERVER_URL}/api/info`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    infoDiv.innerHTML = `
+                        <strong>System:</strong> ${data.system}<br>
+                        <strong>Version:</strong> ${data.version}<br>
+                        <strong>Image Formats:</strong> ${data.supported_formats.images.join(', ')}<br>
+                        <strong>Video Formats:</strong> ${data.supported_formats.videos.join(', ')}<br>
+                        <strong>Features:</strong><br>
+                        ${data.features.map(f => `• ${f}`).join('<br>')}
+                    `;
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                infoDiv.innerHTML = `❌ Failed to load system info: ${error.message}`;
+            }
+        }
+        
+        async function analyzeFile() {
+            const fileInput = document.getElementById('fileInput');
+            const resultsDiv = document.getElementById('analysisResults');
+            
+            if (!fileInput.files[0]) {
+                alert('Please select a file first');
+                return;
+            }
+            
+            resultsDiv.style.display = 'block';
+            resultsDiv.innerHTML = '🔍 Analyzing file...';
+            
+            try {
+                const formData = new FormData();
+                formData.append('file', fileInput.files[0]);
+                
+                const response = await fetch(`${SERVER_URL}/api/analyze`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    let html = `
+                        <h4>📊 Analysis Results</h4>
+                        <strong>Accident Detected:</strong> ${data.accident_detected ? '🚨 YES' : '✅ NO'}<br>
+                        <strong>Message:</strong> ${data.message}<br>
+                        <strong>Total Detections:</strong> ${data.total_detections}<br>
+                    `;
+                    
+                    if (data.frames_processed) {
+                        html += `<strong>Frames Processed:</strong> ${data.frames_processed}<br>`;
+                    }
+                    
+                    if (data.impact_summary) {
+                        const impact = data.impact_summary;
+                        html += `<strong>Overall Impact:</strong> ${impact.overall_impact}<br>`;
+                        if (impact.severe_count > 0) html += `<strong>Severe:</strong> ${impact.severe_count}<br>`;
+                        if (impact.moderate_count > 0) html += `<strong>Moderate:</strong> ${impact.moderate_count}<br>`;
+                        if (impact.minor_count > 0) html += `<strong>Minor:</strong> ${impact.minor_count}<br>`;
+                    }
+                    
+                    if (data.detections && data.detections.length > 0) {
+                        html += '<br><strong>Individual Detections:</strong><br>';
+                        data.detections.slice(0, 3).forEach((det, i) => {
+                            html += `${i+1}. Impact: ${det.impact}, Confidence: ${(det.confidence * 100).toFixed(1)}%<br>`;
+                        });
+                        if (data.detections.length > 3) {
+                            html += `... and ${data.detections.length - 3} more<br>`;
+                        }
+                    }
+                    
+                    resultsDiv.innerHTML = html;
+                } else {
+                    throw new Error(data.error || `HTTP ${response.status}`);
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `❌ Analysis failed: ${error.message}`;
+            }
+        }
+        
+        // Initialize page
+        window.onload = function() {
+            checkHealth();
+            getSystemInfo();
+        };
+    </script>
+</body>
+</html>
