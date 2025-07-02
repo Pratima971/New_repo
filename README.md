@@ -2,7 +2,7 @@
 # SATARK: SMART ASSESSMENT AND TRACKING FOR ACCIDENT RECOGNITION AND KNOWLEDGE.
 Accident Recognitation Using Deep Learning and YOLO Algorithm.
 ![image](https://github.com/user-attachments/assets/1e8b142a-8b4c-4a71-b3f0-4439181fa61e)
-
+https://github.com/user-attachments/assets/9d7c6d02-f2b0-4162-8087-0cd2e63d0f66
 # Extracting the dataset
 !curl -L "https://universe.roboflow.com/ds/PkTjo0rocb?key=cfsz0255qM" > roboflow.zip; unzip roboflow.zip; rm roboflow.zip
 # Installing the modules and packages
