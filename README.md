@@ -1,5 +1,5 @@
 # Private_repo
-SATARK: SMART ASSESSMENT AND TRACKING FOR ACCIDENT RECOGNITION AND KNOWLEDGE.
+# SATARK: SMART ASSESSMENT AND TRACKING FOR ACCIDENT RECOGNITION AND KNOWLEDGE.
 Accident Recognitation Using Deep Learning and YOLO Algorithm.
 ![image](https://github.com/user-attachments/assets/1e8b142a-8b4c-4a71-b3f0-4439181fa61e)
 
