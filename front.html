@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accident Detection System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #aaafbd, #281e1e, #353840);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        header {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 25px;
+            text-align: center;
+            border-bottom: 2px solid #ff6b6b;
+        }
+        
+        h1 {
+            color: #ffffff;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 107, 107, 0.7);
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 30px;
+            gap: 30px;
+        }
+        
+        .upload-section {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .file-upload {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 30px;
+            border: 2px dashed #4a9fe3;
+        }
+        .file-input-wrapper {
+            
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .custom-file-upload {
+            display: inline-block;
+            padding: 12px 25px;
+            background: #4a9fe3;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        .custom-file-upload:hover {
+            background: #3a8fd3;
+            transform: translateY(-2px);
+        }
+        
+        #file-chosen {
+            margin-top: 10px;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+        
+        .upload-btn {
+            background: linear-gradient(to right, #281616, #ff8e53);
+            color: white;
+            border: none;   
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+        
+        .upload-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        }
+        
+        .visual-feed {
+            flex: 2;
+            min-width: 300px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .feed-title {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 15px;
+            text-align: center;
+            color: #fff;
+            font-size: 1.3rem;
+            border-bottom: 2px solid #4a9fe3;
+        }
+        
+        .feed-content {
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="rgba(0,0,0,0.3)"/><path d="M0 0 L100 100 M100 0 L0 100" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>');
+            background-size: 20px 20px;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .media-container {
+            position: relative;
+            max-width: 100%;
+            max-height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .media-content {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 8px;
+        }
+
+
+
+
+        
+        .camera-icon {
+            font-size: 5rem;
+            color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .emergency-section {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .emergency-title {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 15px;
+            text-align: center;
+            color: #fff;
+            font-size: 1.3rem;
+            border-bottom: 2px solid #ff6b6b;
+        }
+        
+        .contacts-list {
+            padding: 20px;
+        }
+        
+        .contact-item {
+            background: rgba(0, 0, 0, 0.5);
+            margin-bottom: 15px;
+            padding: 18px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            color: #fff;
+            transition: all 0.3s ease;
+            border-left: 4px solid #4a9fe3;
+        }
+        
+        .contact-item:hover {
+            transform: translateX(5px);
+            background: rgba(0, 0, 0, 0.7);
+        }
+        
+        .contact-icon {
+            font-size: 1.8rem;
+            margin-right: 15px;
+            width: 40px;
+            text-align: center;
+        }
+        
+        .contact-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: #ff6b6b;
+        }
+        
+        .contact-info p {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4a9fe3;
+        }
+        
+        .alert-banner {
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 12px;
+            animation: pulse 2s infinite;
+            box-shadow: 0 5px 20px rgba(255, 65, 108, 0.5);
+            border: 3px solid #ff1744;
+            display: none;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .alert-banner h2 {
+            color: white;
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .no-accident-banner {
+            background: linear-gradient(to right, #28a745, #20c997);
+            padding: 25px;
+            text-align: center;
+            margin: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(40, 167, 69, 0.5);
+            display: none;
+        }
+
+        .no-accident-banner h2 {
+            color: white;
+            font-size: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .no-accident-banner p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .accident-summary-section {
+            background: linear-gradient(135deg, rgba(255, 65, 108, 0.2), rgba(255, 75, 43, 0.2));
+            padding: 20px;
+            margin: 20px;
+            border-radius: 12px;
+            border: 2px solid #ff416c;
+            display: none;
+            box-shadow: 0 5px 20px rgba(255, 65, 108, 0.3);
+        }
+
+        .accident-summary-section h3 {
+            color: #ff416c;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .accident-item {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accident-item.severe {
+            border-left-color: #ff0000;
+            background: rgba(255, 0, 0, 0.1);
+        }
+
+        .accident-item.moderate {
+            border-left-color: #ffa500;
+            background: rgba(255, 165, 0, 0.1);
+        }
+
+        .accident-item.minor {
+            border-left-color: #ffff00;
+            background: rgba(255, 255, 0, 0.1);
+        }
+
+        .accident-info {
+            flex: 1;
+        }
+
+        .accident-badge {
+            background: #ff416c;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .accident-badge.severe {
+            background: #ff0000;
+        }
+
+        .accident-badge.moderate {
+            background: #ffa500;
+        }
+
+        .accident-badge.minor {
+            background: #ffff00;
+            color: black;
+        }
+
+        .results-section {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            margin: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+        }
+
+        .results-section h3 {
+            color: #4a9fe3;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            text-align: center;
+            border-bottom: 2px solid #4a9fe3;
+            padding-bottom: 10px;
+        }
+
+        .detection-item {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #ff6b6b;
+            color: white;
+        }
+
+        .detection-item.severe {
+            border-left-color: #ff0000;
+        }
+
+        .detection-item.moderate {
+            border-left-color: #ffa500;
+        }
+
+        .detection-item.minor {
+            border-left-color: #ffff00;
+        }
+
+        .impact-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-right: 10px;
+        }
+
+        .impact-badge.severe {
+            background: #ff0000;
+            color: white;
+        }
+
+        .impact-badge.moderate {
+            background: #ffa500;
+            color: white;
+        }
+
+        .impact-badge.minor {
+            background: #ffff00;
+            color: black;
+        }
+
+        .summary-stats {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+
+        .stat-item {
+            text-align: center;
+            color: white;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4a9fe3;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        
+        .disclaimer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Accident Detection System</h1>
+        </header>
+        
+        <div class="main-content">
+            <div class="upload-section">
+                <div class="file-upload">
+                    <div class="file-type-selector">
+                        <label>
+                            <input type="radio" name="file-type" value="video" checked> Video
+                        </label>
+                        <label>
+                            <input type="radio" name="file-type" value="image"> Image
+                        </label>
+                    </div>
+                    <div class="file-input-wrapper">
+                        <label for="file-upload-input" class="custom-file-upload">
+                            <i class="fas fa-cloud-upload-alt"></i> Choose File
+                        </label>
+                        <input id="file-upload-input" type="file" style="display: none;">
+                        <div id="file-chosen">No file chosen</div>
+                    </div>
+                    <button class="upload-btn">Upload & Analyze</button>
+                </div>
+                
+                <div class="alert-banner">
+                    <h2>Accident Detected</h2>
+                </div>
+
+                <div class="no-accident-banner">
+                    <h2>No Accident Detected</h2>
+                    <p>The analysis shows no signs of accidents in the uploaded content.</p>
+                </div>
+
+                <div class="accident-summary-section">
+                    <h3>� Accident Summary</h3>
+                    <div id="accident-summary"></div>
+                </div>
+
+                <div class="results-section">
+                    <h3>Detection Results</h3>
+                    <div id="detection-details"></div>
+                </div>
+            </div>
+            
+            <div class="visual-feed">
+                <div class="feed-title">Visual Feed</div>
+                <div class="feed-content">
+                    <i class="fas fa-video camera-icon"></i>
+                </div>
+            </div>
+            
+            <div class="emergency-section">
+                <div class="emergency-title">Emergency Contacts</div>
+                <div class="contacts-list">
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-ambulance"></i></div>
+                        <div class="contact-info">
+                            <h3>Ambulance</h3>
+                            <p>108</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-shield-alt"></i></div>
+                        <div class="contact-info">
+                            <h3>Police</h3>
+                            <p>100</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-fire"></i></div>
+                        <div class="contact-info">
+                            <h3>Fire Brigade</h3>
+                            <p>101</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-hands-helping"></i></div>
+                        <div class="contact-info">
+                            <h3>Disaster Response</h3>
+                            <p>112</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="disclaimer">
+            <p>This is a simulation for demonstration purposes only. In case of a real emergency, please contact authorities immediately.</p>
+        </div>
+    </div>
+
+    <script>
+        // File upload functionality
+        const fileInput = document.getElementById('file-upload-input');
+        const fileChosen = document.getElementById('file-chosen');
+        const uploadBtn = document.querySelector('.upload-btn');
+        const feedContent = document.querySelector('.feed-content');
+        const alertBanner = document.querySelector('.alert-banner');
+        const noAccidentBanner = document.querySelector('.no-accident-banner');
+        const resultsSection = document.querySelector('.results-section');
+        const detectionDetails = document.getElementById('detection-details');
+        const fileTypeRadios = document.querySelectorAll('input[name="file-type"]');
+
+        // Get accident summary section
+        const accidentSummarySection = document.querySelector('.accident-summary-section');
+        const accidentSummary = document.getElementById('accident-summary');
+
+        // Hide banners initially
+        alertBanner.style.display = 'none';
+        noAccidentBanner.style.display = 'none';
+        resultsSection.style.display = 'none';
+        accidentSummarySection.style.display = 'none';
+
+        // Update accepted file types based on selection
+        fileTypeRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'video') {
+                    fileInput.accept = 'video/*';
+                    fileChosen.textContent = 'No video chosen';
+                } else {
+                    fileInput.accept = 'image/*';
+                    fileChosen.textContent = 'No image chosen';
+                }
+            });
+        });
+
+        fileInput.addEventListener('change', function() {
+            if(this.files.length > 0) {
+                fileChosen.textContent = this.files[0].name;
+                
+                // If it's an image, show preview
+                if (this.files[0].type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        feedContent.innerHTML = `<img src="${e.target.result}" style="max-width: 100%; max-height: 100%;">`;
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            } else {
+                const fileType = document.querySelector('input[name="file-type"]:checked').value;
+                fileChosen.textContent = `No ${fileType} chosen`;
+            }
+        });
+
+        // Upload and analyze file
+        uploadBtn.addEventListener('click', function() {
+            if(fileInput.files.length === 0) {
+                alert('Please select a file first!');
+                return;
+            }
+
+            // Store original file data for overlay purposes
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                window.uploadedFileData = {
+                    src: e.target.result,
+                    type: file.type,
+                    name: file.name
+                };
+            };
+            reader.readAsDataURL(file);
+
+            // Show loading state
+            uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
+            uploadBtn.disabled = true;
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            const fileType = document.querySelector('input[name="file-type"]:checked').value;
+            const endpoint = fileType === 'video' ? '/upload' : '/upload_image';
+
+            fetch(endpoint, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                uploadBtn.innerHTML = 'Upload & Analyze';
+                uploadBtn.disabled = false;
+
+                if (data.error) {
+                    console.error('Server error:', data.error);
+                    alert(`Error: ${data.error}`);
+                    return;
+                }
+
+                // Display results
+                displayResults(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                uploadBtn.innerHTML = 'Upload & Analyze';
+                uploadBtn.disabled = false;
+                alert(`Error analyzing ${fileType}: ${error.message}. Please try again.`);
+            });
+        });
+        
+        // Webcam functionality
+        let webcamActive = false;
+        let webcamCheckInterval;
+        
+        function toggleWebcam() {
+            if (webcamActive) {
+                // Stop webcam
+                feedContent.innerHTML = '<i class="fas fa-video camera-icon"></i>';
+                webcamActive = false;
+                clearInterval(webcamCheckInterval);
+            } else {
+                // Start webcam
+                feedContent.innerHTML = '<img id="webcam-feed" src="/webcam_feed" width="100%" height="100%">';
+                webcamActive = true;
+                
+                // Check for accidents periodically
+                webcamCheckInterval = setInterval(() => {
+                    fetch('/check_webcam_accident')
+                    .then(response => response.json())
+                    .then(data => {
+                        // Only show basic alert for webcam, not full results
+                        if(data.accident_detected) {
+                            alertBanner.style.display = 'block';
+                            noAccidentBanner.style.display = 'none';
+                            playAlertSound();
+                        } else {
+                            alertBanner.style.display = 'none';
+                            noAccidentBanner.style.display = 'none';
+                        }
+                    });
+                }, 1000);
+            }
+        }
+        
+        // Add webcam toggle button
+        const feedTitle = document.querySelector('.feed-title');
+        feedTitle.innerHTML += ' <button id="webcam-toggle" class="webcam-btn"><i class="fas fa-play"></i> Start Webcam</button>';
+        
+        document.getElementById('webcam-toggle').addEventListener('click', function() {
+            toggleWebcam();
+            this.innerHTML = webcamActive ? 
+                '<i class="fas fa-stop"></i> Stop Webcam' : 
+                '<i class="fas fa-play"></i> Start Webcam';
+        });
+        
+        // Function to display analysis results
+        function displayResults(data) {
+            // Hide all sections first
+            alertBanner.style.display = 'none';
+            noAccidentBanner.style.display = 'none';
+            resultsSection.style.display = 'none';
+            accidentSummarySection.style.display = 'none';
+
+            // Always show detailed results
+            resultsSection.style.display = 'block';
+            displayDetectionDetails(data);
+
+            // Display media with bounding boxes in the visual feed
+            displayMediaWithBoundingBoxes(data);
+
+            if (data.accident_detected) {
+                // Show accident detected banner
+                alertBanner.style.display = 'block';
+                playAlertSound();
+
+                // Show separate accident detection summary
+                displayAccidentSummary(data);
+            } else {
+                // Show no accident banner for cases with no detections
+                noAccidentBanner.style.display = 'block';
+            }
+        }
+
+        // Function to display media with bounding boxes overlaid
+        function displayMediaWithBoundingBoxes(data) {
+            // Clear the feed content
+            feedContent.innerHTML = '';
+
+            // If annotated image is available, show it with bounding boxes
+            if (data.annotated_image) {
+                displayImageWithBoundingBoxes(data.annotated_image, data.detections, data.image_dimensions);
+            }
+            // If annotated video is available, show it
+            else if (data.annotated_video) {
+                displayVideoWithBoundingBoxes(data.annotated_video, data);
+            }
+            // If key frames are available, show slideshow with bounding boxes
+            else if (data.key_frames && data.key_frames.length > 0) {
+                window.currentKeyFrames = data.key_frames;
+                showKeyFramesWithBoundingBoxes();
+            }
+            // If no annotated content but we have original file, show it
+            else if (window.uploadedFileData) {
+                displayImageWithBoundingBoxes(window.uploadedFileData.src, data.detections, data.image_dimensions);
+            }
+        }
+
+        // Function to display image (with backend-drawn bounding boxes if available)
+        function displayImageWithBoundingBoxes(imageSrc, detections, dimensions) {
+            const container = document.createElement('div');
+            container.className = 'media-container';
+
+            const img = document.createElement('img');
+            img.className = 'media-content';
+            img.src = imageSrc;
+
+            container.appendChild(img);
+            feedContent.appendChild(container);
+
+            // Add info text
+            if (detections && detections.length > 0) {
+                const infoDiv = document.createElement('div');
+                infoDiv.style.cssText = 'text-align: center; color: #ff6b6b; margin-top: 10px; font-size: 0.9rem;';
+                infoDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Accidents detected and highlighted with impact-based bounding boxes';
+                feedContent.appendChild(infoDiv);
+            } else {
+                const infoDiv = document.createElement('div');
+                infoDiv.style.cssText = 'text-align: center; color: #28a745; margin-top: 10px; font-size: 0.9rem;';
+                infoDiv.innerHTML = '<i class="fas fa-check-circle"></i> No accidents detected in this image';
+                feedContent.appendChild(infoDiv);
+            }
+        }
+
+        // Function to display video with bounding boxes
+        function displayVideoWithBoundingBoxes(videoSrc, data) {
+            console.log('Loading annotated video:', videoSrc);
+
+            const container = document.createElement('div');
+            container.className = 'media-container';
+
+            const video = document.createElement('video');
+            video.className = 'media-content';
+            video.controls = true;
+            video.autoplay = true;
+            video.muted = true;
+
+            video.onloadstart = () => console.log('Video load started');
+            video.oncanplay = () => console.log('Video can play');
+            video.onerror = () => {
+                console.error('Video error, showing key frames');
+                showKeyFramesWithBoundingBoxes();
+            };
+
+            const source = document.createElement('source');
+            source.src = videoSrc;
+            source.type = 'video/mp4';
+
+            video.appendChild(source);
+            container.appendChild(video);
+            feedContent.appendChild(container);
+
+            // Store key frames for fallback
+            window.currentKeyFrames = data.key_frames;
+
+            // Set a timeout to check if video loads, if not show key frames
+            setTimeout(() => {
+                if (video.networkState === video.NETWORK_NO_SOURCE || video.error) {
+                    showKeyFramesWithBoundingBoxes();
+                }
+            }, 3000);
+
+            // Add info text
+            const infoDiv = document.createElement('div');
+            infoDiv.style.cssText = 'text-align: center; color: #ff6b6b; margin-top: 10px; font-size: 0.9rem;';
+            infoDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Video shows accidents highlighted with colored bounding boxes';
+            feedContent.appendChild(infoDiv);
+        }
+
+
+
+        // Function to display detailed detection information
+        function displayDetectionDetails(data) {
+            let html = '';
+
+            // Summary statistics
+            if (data.total_detections !== undefined) {
+                html += '<div class="summary-stats">';
+                html += `<div class="stat-item"><div class="stat-value">${data.total_detections}</div><div class="stat-label">Total Detections</div></div>`;
+
+                if (data.frames_processed) {
+                    html += `<div class="stat-item"><div class="stat-value">${data.frames_processed}</div><div class="stat-label">Frames Processed</div></div>`;
+                }
+
+                if (data.impact_summary) {
+                    const impact = data.impact_summary;
+                    html += `<div class="stat-item"><div class="stat-value">${impact.overall_impact}</div><div class="stat-label">Overall Impact</div></div>`;
+
+                    if (impact.severe_count > 0) {
+                        html += `<div class="stat-item"><div class="stat-value">${impact.severe_count}</div><div class="stat-label">Severe</div></div>`;
+                    }
+                    if (impact.moderate_count > 0) {
+                        html += `<div class="stat-item"><div class="stat-value">${impact.moderate_count}</div><div class="stat-label">Moderate</div></div>`;
+                    }
+                    if (impact.minor_count > 0) {
+                        html += `<div class="stat-item"><div class="stat-value">${impact.minor_count}</div><div class="stat-label">Minor</div></div>`;
+                    }
+                }
+
+                html += '</div>';
+            }
+
+            // Individual detections
+            if (data.detections && data.detections.length > 0) {
+                html += '<h4 style="color: #4a9fe3; margin: 15px 0;">Individual Detections:</h4>';
+
+                data.detections.forEach((detection, index) => {
+                    const impactClass = detection.impact.toLowerCase();
+                    html += `<div class="detection-item ${impactClass}">`;
+                    html += `<span class="impact-badge ${impactClass}">${detection.impact}</span>`;
+                    html += `<strong>Detection ${index + 1}</strong><br>`;
+                    html += `Confidence: ${(detection.confidence * 100).toFixed(1)}%<br>`;
+
+                    if (detection.bbox) {
+                        const bbox = detection.bbox;
+                        html += `Location: (${bbox.x1}, ${bbox.y1}) to (${bbox.x2}, ${bbox.y2})<br>`;
+                        const width = bbox.x2 - bbox.x1;
+                        const height = bbox.y2 - bbox.y1;
+                        html += `Size: ${width} × ${height} pixels<br>`;
+                    }
+
+                    if (detection.frame) {
+                        html += `Frame: ${detection.frame}<br>`;
+                    }
+
+                    html += '</div>';
+                });
+            } else if (data.total_detections === 0) {
+                html += '<div style="text-align: center; color: #28a745; padding: 20px;">';
+                html += '<i class="fas fa-check-circle" style="font-size: 3rem; margin-bottom: 10px;"></i><br>';
+                html += '<strong>Analysis Complete</strong><br>';
+                html += 'No accidents detected in the uploaded content.';
+                html += '</div>';
+            }
+
+            detectionDetails.innerHTML = html;
+        }
+
+        // Function to show key frames as slideshow with bounding boxes
+        function showKeyFramesWithBoundingBoxes() {
+            if (!window.currentKeyFrames || window.currentKeyFrames.length === 0) {
+                return;
+            }
+
+            console.log('Showing key frames slideshow with bounding boxes');
+            let currentFrameIndex = 0;
+
+            function createSlideshow() {
+                const keyFrames = window.currentKeyFrames;
+
+                const container = document.createElement('div');
+                container.style.cssText = 'position: relative; max-width: 100%; max-height: 100%;';
+
+                // Create frame container
+                const frameContainer = document.createElement('div');
+                frameContainer.id = 'frame-container';
+                frameContainer.className = 'media-container';
+                frameContainer.style.cssText = 'text-align: center; margin-bottom: 10px;';
+
+                // Create image
+                const img = document.createElement('img');
+                img.id = 'current-frame';
+                img.className = 'media-content';
+                img.src = keyFrames[0].image_data;
+                img.style.cssText = 'max-width: 100%; max-height: 350px; border-radius: 8px; border: 3px solid #ff6b6b;';
+
+                frameContainer.appendChild(img);
+
+                // Add bounding boxes for the first frame
+                if (keyFrames[0].detections) {
+                    img.onload = function() {
+                        addBoundingBoxOverlay(frameContainer, img, keyFrames[0].detections);
+                    };
+                }
+
+                // Create controls
+                const controls = document.createElement('div');
+                controls.style.cssText = 'text-align: center; margin: 10px 0;';
+                controls.innerHTML = `
+                    <button onclick="previousFrame()" style="background: #4a9fe3; color: white; border: none; padding: 8px 15px; margin: 0 5px; border-radius: 5px; cursor: pointer;">
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </button>
+                    <span style="color: #4a9fe3; margin: 0 15px; font-weight: bold;">
+                        Frame <span id="frame-number">${keyFrames[0].frame_number}</span> of ${keyFrames.length} key frames
+                    </span>
+                    <button onclick="nextFrame()" style="background: #4a9fe3; color: white; border: none; padding: 8px 15px; margin: 0 5px; border-radius: 5px; cursor: pointer;">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </button>
+                `;
+
+                // Create info text
+                const info = document.createElement('div');
+                info.style.cssText = 'text-align: center; color: #ff6b6b; margin-top: 10px; font-size: 0.9rem;';
+                info.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Key frames showing detected accidents with colored bounding boxes';
+
+                container.appendChild(frameContainer);
+                container.appendChild(controls);
+                container.appendChild(info);
+
+                feedContent.innerHTML = '';
+                feedContent.appendChild(container);
+
+                // Auto-advance slideshow
+                window.slideshowInterval = setInterval(() => {
+                    nextFrame();
+                }, 2000);
+            }
+
+            window.nextFrame = function() {
+                const keyFrames = window.currentKeyFrames;
+                currentFrameIndex = (currentFrameIndex + 1) % keyFrames.length;
+                updateCurrentFrame();
+            };
+
+            window.previousFrame = function() {
+                const keyFrames = window.currentKeyFrames;
+                currentFrameIndex = (currentFrameIndex - 1 + keyFrames.length) % keyFrames.length;
+                updateCurrentFrame();
+            };
+
+            function updateCurrentFrame() {
+                const keyFrames = window.currentKeyFrames;
+                const currentFrame = keyFrames[currentFrameIndex];
+                const img = document.getElementById('current-frame');
+                const frameContainer = document.getElementById('frame-container');
+
+                // Update image
+                img.src = currentFrame.image_data;
+                document.getElementById('frame-number').textContent = currentFrame.frame_number;
+
+                // Remove old overlay
+                const oldOverlay = frameContainer.querySelector('.bounding-box-overlay');
+                if (oldOverlay) {
+                    oldOverlay.remove();
+                }
+
+                // Add new bounding boxes
+                if (currentFrame.detections) {
+                    img.onload = function() {
+                        addBoundingBoxOverlay(frameContainer, img, currentFrame.detections);
+                    };
+                }
+            }
+
+            createSlideshow();
+        }
+
+
+
+        // Legacy function for backward compatibility
+        function showKeyFrames() {
+            showKeyFramesWithBoundingBoxes();
+        }
+
+        // Function to display accident summary
+        function displayAccidentSummary(data) {
+            if (!data.accident_detected || !data.detections || data.detections.length === 0) {
+                accidentSummarySection.style.display = 'none';
+                return;
+            }
+
+            accidentSummarySection.style.display = 'block';
+
+            let html = '';
+
+            // Overall summary (without ACCIDENT DETECTED since it's in the alert banner)
+            html += `
+                <div style="text-align: center; margin-bottom: 20px; padding: 15px; background: rgba(255, 65, 108, 0.2); border-radius: 8px;">
+                    <div style="font-size: 2rem; margin-bottom: 10px;">🚨</div>
+                    <div style="color: white; font-size: 1.1rem; font-weight: bold;">${data.total_detections} accident${data.total_detections > 1 ? 's' : ''} found</div>
+                </div>
+            `;
+
+            // Impact summary for videos
+            if (data.impact_summary) {
+                const impact = data.impact_summary;
+                html += `
+                    <div style="text-align: center; margin-bottom: 20px; padding: 15px; background: rgba(0, 0, 0, 0.4); border-radius: 8px;">
+                        <div style="color: #ff416c; font-weight: bold; margin-bottom: 10px;">Overall Impact: ${impact.overall_impact.toUpperCase()}</div>
+                        <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                `;
+
+                if (impact.severe_count > 0) {
+                    html += `<span style="background: #ff0000; color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.9rem;">Severe: ${impact.severe_count}</span>`;
+                }
+                if (impact.moderate_count > 0) {
+                    html += `<span style="background: #ffa500; color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.9rem;">Moderate: ${impact.moderate_count}</span>`;
+                }
+                if (impact.minor_count > 0) {
+                    html += `<span style="background: #ffff00; color: black; padding: 5px 10px; border-radius: 15px; font-size: 0.9rem;">Minor: ${impact.minor_count}</span>`;
+                }
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Individual accidents
+            html += '<div style="margin-top: 15px;">';
+            data.detections.forEach((detection, index) => {
+                const impactClass = detection.impact.toLowerCase();
+                html += `
+                    <div class="accident-item ${impactClass}">
+                        <div class="accident-info">
+                            <div style="font-weight: bold; font-size: 1.1rem; margin-bottom: 5px;">
+                                🚨 Accident ${index + 1}
+                            </div>
+                            <div style="font-size: 0.9rem; color: #ccc;">
+                                Confidence: ${(detection.confidence * 100).toFixed(1)}%
+                                ${detection.frame ? ` | Frame: ${detection.frame}` : ''}
+                            </div>
+                        </div>
+                        <div class="accident-badge ${impactClass}">
+                            ${detection.impact}
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+
+            accidentSummary.innerHTML = html;
+        }
+
+        // Function to play alert sound
+        function playAlertSound() {
+            const audio = new Audio('/static/alert.mp3');
+            audio.play().catch(e => console.log('Audio play failed:', e));
+        }
+        
+        // Add some CSS for the webcam button
+        const style = document.createElement('style');
+        style.textContent = `
+            .webcam-btn {
+                background: #4a9fe3;
+                color: white;
+                border: none;
+                padding: 5px 10px;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-left: 10px;
+                font-size: 0.8rem;
+            }
+            .webcam-btn:hover {
+                background: #3a8fd3;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
