@@ -36,8 +36,9 @@ print("Torch version:", torch.__version__)
 print("CUDA available:", torch.cuda.is_available())
 ```
 ## 4. Load a model
-# DOWNLOAD AND ACCESS THE MODEL
+DOWNLOAD AND ACCESS THE MODEL
 https://drive.google.com/file/d/1OWXwoMoyhyrDcBqYxayWb-TR6gjcFCMq/view?usp=sharing
+
 Load the pre-trained YOLO model to initialize it for inference or fine-tuning.
 
 ```
