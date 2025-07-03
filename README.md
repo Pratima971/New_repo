@@ -1,6 +1,9 @@
 # SATARK: Smart Assessment and Tracking for Accident Recognition and Knowledge.
 A real-time car accident detection system leveraging YOLOv11 for fast and accurate identification of traffic incidents using advanced deep learning techniques.
 ![image](https://github.com/user-attachments/assets/1e8b142a-8b4c-4a71-b3f0-4439181fa61e)
+![image](https://github.com/user-attachments/assets/1e8b142a-8b4c-4a71-b3f0-4439181fa61e)
+![video](https://github.com/Pratima971/New_repo/blob/main/vid_4.avi)
+
 https://github.com/user-attachments/assets/9d7c6d02-f2b0-4162-8087-0cd2e63d0f66
 ## 1. Extracting the dataset
 ```
