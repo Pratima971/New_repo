@@ -7,7 +7,8 @@ A real-time car accident detection system leveraging YOLOv11 for fast and accura
 
 ![image](https://github.com/Pratima971/New_repo/blob/main/image_1.png)
 
-![video](https://github.com/Pratima971/New_repo/blob/main/vid_4.avi)
+https://github.com/user-attachments/assets/5fd60b88-b087-48fa-bb36-67e49aeaf7b7
+
 
 
 ## 1. Extracting the dataset
@@ -35,7 +36,8 @@ print("Torch version:", torch.__version__)
 print("CUDA available:", torch.cuda.is_available())
 ```
 ## 4. Load a model
-
+# DOWNLOAD AND ACCESS THE MODEL
+https://drive.google.com/file/d/1OWXwoMoyhyrDcBqYxayWb-TR6gjcFCMq/view?usp=sharing
 Load the pre-trained YOLO model to initialize it for inference or fine-tuning.
 
 ```
